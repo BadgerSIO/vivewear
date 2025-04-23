@@ -11,8 +11,18 @@
   "sections": {
     "main": {
       "type": "404-page",
-      "settings": {}
+      "settings": {
+        "section_title": "Page not found",
+        "section_image": "shopify://shop_images/page-not-found.svg",
+        "btn_label": "Go back",
+        "btn_link": "/",
+        "section_padding_desktop": 100,
+        "section_padding_tablet": 60,
+        "section_padding_mobile": 50
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
