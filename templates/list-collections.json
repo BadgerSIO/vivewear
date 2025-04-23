@@ -11,7 +11,12 @@
   "sections": {
     "list-collections": {
       "type": "main-list-collections",
-      "settings": {}
+      "settings": {
+        "section_title": "Explore Collection List",
+        "section_padding_desktop": 100,
+        "section_padding_tablet": 60,
+        "section_padding_mobile": 50
+      }
     }
   },
   "order": ["list-collections"]

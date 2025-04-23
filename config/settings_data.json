@@ -1,1 +1,270 @@
-{"current":{"primary_btn_hover_background":"#d2ecf4","primary_btn_text":"#f4fafc","secondary_btn_background":"#edf7fa","secondary_btn_hover_text":"#f4fafc","font_heading":"dosis_n5","font_body":"dm_sans_n4","sections":{"collection-list":{"type":"collection-list","blocks":{"collection_3aCrxY":{"type":"collection","settings":{"collection":""}}},"block_order":["collection_3aCrxY"],"disabled":true,"settings":{"title":"Collection list"}},"featured-collection":{"type":"featured-collection","settings":{"title":"Featured collection","collection":"frontpage"}},"featured-product":{"type":"featured-product","settings":{}},"header":{"type":"header","settings":{"logo":"shopify:\/\/shop_images\/vibewear-logo.webp","menu":"saad-menu","enable_searchbar":true}},"footer":{"type":"footer","blocks":{"footer_logo_LGT6Xj":{"type":"footer_logo","settings":{"footer_logo":"shopify:\/\/shop_images\/vibewear-logo.webp","logo_size_mobile":80,"logo_size_tablet":80,"logo_size_desktop":205}},"menu_one_M96YDa":{"type":"menu_one","settings":{"menu_title":"Menu title","footer_menu_one":"saad-menu"}},"menu_two_N3DwmY":{"type":"menu_two","settings":{"menu_title":"Collections","footer_menu_two":"saad-menu"}}},"block_order":["footer_logo_LGT6Xj","menu_one_M96YDa","menu_two_N3DwmY"],"settings":{"footer_bottom":"© 2025 Your Company"}},"slideshow_DNbKJ3":{"type":"slideshow","blocks":{"slider_XmBTCP":{"type":"slider","settings":{"slider_img":"shopify:\/\/shop_images\/Professional_fine_art_photograph_warm_autumnal_colors_soft_lighting_subtle_shadows_elegant_and_refined_aesthetic_showcasing_a_diverse_range_of_men_s_and_women_s_fashion_vibrant_color_2934f9f5-a2db-4849-b915-abc5579d845e.webp","slider_autoplay_interval":5000,"slide_title":"Step into Style – New Arrivals","slide_details":"<p>Discover the latest fashion trends with sleek designs and bold accessories. Elevate your wardrobe today!<\/p>","slide_btn_label":"Shop now","slide_btn_url":"shopify:\/\/collections"}},"slider_qGhzVg":{"type":"slider","settings":{"slider_img":"shopify:\/\/shop_images\/Professional_photography_warm_slightly_dark_soft_light_autumnal_colors._Image_depicts_high-fashion_clothing_for_men_and_women_with_a_focus_on_rich_textures_and_flawless_detailing._The.webp","slider_autoplay_interval":5000,"slide_title":"Timeless Elegance – Curated Looks","slide_details":"<p>From sophisticated classics to modern flair, explore styles that redefine fashion for every season.<\/p>","slide_btn_label":"Shop now","slide_btn_url":"shopify:\/\/collections"}},"slider_nJ4RrM":{"type":"slider","settings":{"slider_img":"shopify:\/\/shop_images\/Professional_photograph_warm_slightly_dark_tones_soft_lighting_autumnal_colors._The_image_features_a_diverse_range_of_fashionable_clothing_items_for_men_and_women._The_focus_is_on_int.webp","slider_autoplay_interval":5000,"slide_title":"Fashion Forward – Trends for All","slide_details":"<p>Stay ahead with our curated collection, blending elegance and contemporary vibes. Shop the look now!<\/p>","slide_btn_label":"Shop now","slide_btn_url":"shopify:\/\/collections"}}},"block_order":["slider_XmBTCP","slider_qGhzVg","slider_nJ4RrM"],"settings":{"slider_autoplay":true,"slider_navigation":true}},"featured_collection_q8aeCT":{"type":"featured-collection","settings":{"title":"Our Featured Collection","collection":"featured-collection","number_of_product":8,"number_of_product_column":4,"section_padding":100}},"featured_product_rFygPb":{"type":"featured-product","blocks":{"title_aq6YVc":{"type":"title","settings":{}},"variant_WEKAWi":{"type":"variant","settings":{}},"price_JEFf4f":{"type":"price","settings":{}},"product_description_hgNwF4":{"type":"product_description","settings":{}},"quantity_CdWHMQ":{"type":"quantity","settings":{}},"add_to_cart_zBh9rW":{"type":"add_to_cart","settings":{}}},"block_order":["title_aq6YVc","variant_WEKAWi","price_JEFf4f","product_description_hgNwF4","quantity_CdWHMQ","add_to_cart_zBh9rW"],"settings":{"featured_product_bg":"#f8fdfd","featured_product_section_title":"Featured Product","featured_product":"classic-varsity-top","section_padding":100}},"image_with_text_HPEym8":{"type":"image-with-text","blocks":{"title_gNVFen":{"type":"title","settings":{"section_title":"Discover Our Latest Collection"}},"description_9WqAfC":{"type":"description","settings":{"section_paragraph":"<p>Explore the newest trends in men’s and women’s fashion at VibeWear. From stylish tops to comfortable accessories, our latest collection has everything you need to elevate your wardrobe. Shop now and enjoy exclusive offers!<\/p>"}},"action_NCgjF6":{"type":"action","settings":{"btn_label":"Shop now","btn_url":"shopify:\/\/collections"}}},"block_order":["title_gNVFen","description_9WqAfC","action_NCgjF6"],"settings":{"section_image":"shopify:\/\/shop_images\/Low_angle_split_composition_photograph_of_a_poised_man_and_woman_in_designer_clothing_runway_setting_warm_soft_lighting_diffused_shadows_subtle_illumination_Photo_Of_The_Year_style_so.webp","image_positin":"right","section_padding":100}},"newsletter_dV988G":{"type":"newsletter","settings":{"section_title":"Subscribe to our newsletter","paragraph":"<p>Any customers who sign up will have an account created for them in Shopify.<\/p>","section_bg":"#f4fafc","section_padding":100}}},"content_for_index":["collection-list","slideshow_DNbKJ3","featured_collection_q8aeCT","featured_product_rFygPb","image_with_text_HPEym8","newsletter_dV988G"]},"presets":{"Default":{"sections":{"collection-list":{"type":"collection-list","blocks":{"collection-list-0":{"type":"collection","settings":{}},"collection-list-1":{"type":"collection","settings":{}},"collection-list-2":{"type":"collection","settings":{}}},"block_order":["collection-list-0","collection-list-1","collection-list-2"],"settings":{}},"featured-collection":{"type":"featured-collection","settings":{"collection":"frontpage"}},"featured-product":{"type":"featured-product","settings":{}}},"content_for_index":["collection-list","featured-collection","featured-product"]}}}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "primary_btn_hover_background": "#d2ecf4",
+    "primary_btn_text": "#f4fafc",
+    "secondary_btn_background": "#edf7fa",
+    "secondary_btn_hover_text": "#f4fafc",
+    "font_heading": "dosis_n5",
+    "font_body": "dm_sans_n4",
+    "sections": {
+      "featured-collection": {
+        "type": "featured-collection",
+        "settings": {
+          "title": "Featured collection",
+          "collection": "frontpage"
+        }
+      },
+      "featured-product": {
+        "type": "featured-product",
+        "settings": {}
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify://shop_images/vibewear-logo.webp",
+          "menu": "saad-menu",
+          "enable_searchbar": true
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "footer_logo_LGT6Xj": {
+            "type": "footer_logo",
+            "settings": {
+              "footer_logo": "shopify://shop_images/vibewear-logo.webp",
+              "logo_size_mobile": 80,
+              "logo_size_tablet": 80,
+              "logo_size_desktop": 205
+            }
+          },
+          "menu_one_M96YDa": {
+            "type": "menu_one",
+            "settings": {
+              "menu_title": "Menu title",
+              "footer_menu_one": "saad-menu"
+            }
+          },
+          "menu_two_N3DwmY": {
+            "type": "menu_two",
+            "settings": {
+              "menu_title": "Collections",
+              "footer_menu_two": "saad-menu"
+            }
+          }
+        },
+        "block_order": [
+          "footer_logo_LGT6Xj",
+          "menu_one_M96YDa",
+          "menu_two_N3DwmY"
+        ],
+        "settings": {
+          "footer_bottom": "© 2025 Your Company"
+        }
+      },
+      "slideshow_DNbKJ3": {
+        "type": "slideshow",
+        "blocks": {
+          "slider_XmBTCP": {
+            "type": "slider",
+            "settings": {
+              "slider_img": "shopify://shop_images/Professional_fine_art_photograph_warm_autumnal_colors_soft_lighting_subtle_shadows_elegant_and_refined_aesthetic_showcasing_a_diverse_range_of_men_s_and_women_s_fashion_vibrant_color_2934f9f5-a2db-4849-b915-abc5579d845e.webp",
+              "slider_autoplay_interval": 5000,
+              "slide_title": "Step into Style – New Arrivals",
+              "slide_details": "<p>Discover the latest fashion trends with sleek designs and bold accessories. Elevate your wardrobe today!</p>",
+              "slide_btn_label": "Shop now",
+              "slide_btn_url": "shopify://collections"
+            }
+          },
+          "slider_qGhzVg": {
+            "type": "slider",
+            "settings": {
+              "slider_img": "shopify://shop_images/Professional_photography_warm_slightly_dark_soft_light_autumnal_colors._Image_depicts_high-fashion_clothing_for_men_and_women_with_a_focus_on_rich_textures_and_flawless_detailing._The.webp",
+              "slider_autoplay_interval": 5000,
+              "slide_title": "Timeless Elegance – Curated Looks",
+              "slide_details": "<p>From sophisticated classics to modern flair, explore styles that redefine fashion for every season.</p>",
+              "slide_btn_label": "Shop now",
+              "slide_btn_url": "shopify://collections"
+            }
+          },
+          "slider_nJ4RrM": {
+            "type": "slider",
+            "settings": {
+              "slider_img": "shopify://shop_images/Professional_photograph_warm_slightly_dark_tones_soft_lighting_autumnal_colors._The_image_features_a_diverse_range_of_fashionable_clothing_items_for_men_and_women._The_focus_is_on_int.webp",
+              "slider_autoplay_interval": 5000,
+              "slide_title": "Fashion Forward – Trends for All",
+              "slide_details": "<p>Stay ahead with our curated collection, blending elegance and contemporary vibes. Shop the look now!</p>",
+              "slide_btn_label": "Shop now",
+              "slide_btn_url": "shopify://collections"
+            }
+          }
+        },
+        "block_order": [
+          "slider_XmBTCP",
+          "slider_qGhzVg",
+          "slider_nJ4RrM"
+        ],
+        "settings": {
+          "slider_autoplay": true,
+          "slider_navigation": true
+        }
+      },
+      "featured_collection_q8aeCT": {
+        "type": "featured-collection",
+        "settings": {
+          "title": "Our Featured Collection",
+          "collection": "featured-collection",
+          "number_of_product": 8,
+          "number_of_product_column": 4,
+          "section_padding": 100
+        }
+      },
+      "featured_product_rFygPb": {
+        "type": "featured-product",
+        "blocks": {
+          "title_aq6YVc": {
+            "type": "title",
+            "settings": {}
+          },
+          "variant_WEKAWi": {
+            "type": "variant",
+            "settings": {}
+          },
+          "price_JEFf4f": {
+            "type": "price",
+            "settings": {}
+          },
+          "product_description_hgNwF4": {
+            "type": "product_description",
+            "settings": {}
+          },
+          "quantity_CdWHMQ": {
+            "type": "quantity",
+            "settings": {}
+          },
+          "add_to_cart_zBh9rW": {
+            "type": "add_to_cart",
+            "settings": {}
+          }
+        },
+        "block_order": [
+          "title_aq6YVc",
+          "variant_WEKAWi",
+          "price_JEFf4f",
+          "product_description_hgNwF4",
+          "quantity_CdWHMQ",
+          "add_to_cart_zBh9rW"
+        ],
+        "settings": {
+          "featured_product_bg": "#f8fdfd",
+          "featured_product_section_title": "Featured Product",
+          "featured_product": "classic-varsity-top",
+          "section_padding": 100
+        }
+      },
+      "image_with_text_HPEym8": {
+        "type": "image-with-text",
+        "blocks": {
+          "title_gNVFen": {
+            "type": "title",
+            "settings": {
+              "section_title": "Discover Our Latest Collection"
+            }
+          },
+          "description_9WqAfC": {
+            "type": "description",
+            "settings": {
+              "section_paragraph": "<p>Explore the newest trends in men’s and women’s fashion at VibeWear. From stylish tops to comfortable accessories, our latest collection has everything you need to elevate your wardrobe. Shop now and enjoy exclusive offers!</p>"
+            }
+          },
+          "action_NCgjF6": {
+            "type": "action",
+            "settings": {
+              "btn_label": "Shop now",
+              "btn_url": "shopify://collections"
+            }
+          }
+        },
+        "block_order": [
+          "title_gNVFen",
+          "description_9WqAfC",
+          "action_NCgjF6"
+        ],
+        "settings": {
+          "section_image": "shopify://shop_images/Low_angle_split_composition_photograph_of_a_poised_man_and_woman_in_designer_clothing_runway_setting_warm_soft_lighting_diffused_shadows_subtle_illumination_Photo_Of_The_Year_style_so.webp",
+          "image_positin": "right",
+          "section_padding": 100
+        }
+      },
+      "newsletter_dV988G": {
+        "type": "newsletter",
+        "settings": {
+          "section_title": "Subscribe to our newsletter",
+          "paragraph": "<p>Any customers who sign up will have an account created for them in Shopify.</p>",
+          "section_bg": "#f4fafc",
+          "section_padding": 100
+        }
+      }
+    },
+    "content_for_index": [
+      "slideshow_DNbKJ3",
+      "featured_collection_q8aeCT",
+      "featured_product_rFygPb",
+      "image_with_text_HPEym8",
+      "newsletter_dV988G"
+    ]
+  },
+  "presets": {
+    "Default": {
+      "sections": {
+        "collection-list": {
+          "type": "collection-list",
+          "blocks": {
+            "collection-list-0": {
+              "type": "collection",
+              "settings": {}
+            },
+            "collection-list-1": {
+              "type": "collection",
+              "settings": {}
+            },
+            "collection-list-2": {
+              "type": "collection",
+              "settings": {}
+            }
+          },
+          "block_order": [
+            "collection-list-0",
+            "collection-list-1",
+            "collection-list-2"
+          ],
+          "settings": {}
+        },
+        "featured-collection": {
+          "type": "featured-collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        },
+        "featured-product": {
+          "type": "featured-product",
+          "settings": {}
+        }
+      },
+      "content_for_index": [
+        "collection-list",
+        "featured-collection",
+        "featured-product"
+      ]
+    }
+  }
+}
