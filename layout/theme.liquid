@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ViveWear</title>
+    {{ content_for_header }}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+   {{ 'custom.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body>
+    <!-- header start -->
+    {% section 'header' %}
+    <!-- header end -->
+    <main class="main">
+      {{ content_for_layout }}
+    </main>
+    <!-- footer start -->
+    {% section 'footer' %}
+    <!-- footer end -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

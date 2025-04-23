@@ -1,0 +1,90 @@
+{% liquid
+  assign logo = section.settings.logo
+  assign menu = section.settings.menu
+  assign searchbar = section.settings.enable_searchbar
+%}
+<nav class="navbar navbar-expand-lg bg-body-tertiary py-3">
+  <div class="container gap-5">
+    {% if logo != null %}
+      <img src="{{ logo | image_url: width: 120 }}" alt="{{ shop.name | escape  }}" width="auto" height="auto">
+    {% else %}
+      <a class="navbar-brand" href="#">{{ shop.name | escape }}</a>
+    {% endif %}
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% for link in menu.links %}
+          <li
+            class="nav-item {% if link.links.size > 0 %} dropdown {% endif %}"
+          >
+            <a
+              class="nav-link {% if link.active %} active {% endif %} {% if link.links.size > 0 %} dropdown-toggle {% endif %}"
+              href="{{ link.url }}"
+              {% if link.active %}
+                aria-current="page"
+              {% endif %}
+              {% if link.links.size > 0 %}
+                role="button" data-bs-toggle="dropdown" aria-expanded="false"
+              {% endif %}
+            >
+              {{- link.title -}}
+            </a>
+            {% if link.links.size > 0 %}
+              <ul class="dropdown-menu">
+                {% for dropLink in link.links %}
+                  <li>
+                    <a class="dropdown-item" href="{{ dropLink.url }}">{{ dropLink.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+      {% if searchbar %}
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Type here ..." aria-label="Search">
+          <button class="vivewear_btn_primary" type="submit">Search</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+{% schema %}
+{
+"name":"Header",
+  "settings":[
+    {
+      "type":"image_picker",
+      "id":"logo",
+      "label": "Select logo",
+      "info":"Max size 200X200"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Search Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_searchbar",
+      "label": "Enable searchbar",
+      "default":true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,213 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Vive Wear",
+    "theme_version": "1.0.0",
+    "theme_author": "Saad Ibne Omar",
+    "theme_documentation_url": "https:\/\/THEME_DOCUMENTATION_URL.com\/",
+    "theme_support_url": "https:\/\/elementor.saadportfolio.xyz\/"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#c4cdd5",
+        "info": "Buttons and special ornaments"
+      },
+      {
+        "type": "color",
+        "id": "color_body_text",
+        "label": "Text",
+        "default": "#161d25"
+      },
+      {
+        "type": "color",
+        "id": "color_main_bg",
+        "label": "Background",
+        "default": "#fff"
+      },
+      {
+        "type": "header",
+        "content": "Button color settings"
+      },
+      {
+        "type": "color",
+        "id": "primary_btn_background",
+        "label": "Primary Btn Background",
+        "default": "#022C3B"
+      },
+      {
+        "type": "color",
+        "id": "primary_btn_hover_background",
+        "label": "Primary Btn Hover Background",
+        "default": "#d2ecf4"
+      },
+      {
+        "type": "color",
+        "id": "primary_btn_text",
+        "label": "Primary Btn Text",
+        "default": "#d2ecf4"
+      },
+      {
+        "type": "color",
+        "id": "primary_btn_hover_text",
+        "label": "Primary Btn Hover Text",
+        "default": "#022C3B"
+      },
+      {
+        "type": "color",
+        "id": "secondary_btn_background",
+        "label": "Secondary Btn Background",
+        "default": "#d2ecf4"
+      },
+      {
+        "type": "color",
+        "id": "secondary_btn_hover_background",
+        "label": "Secondary Btn Hover Background",
+        "default": "#022C3B"
+      },
+      {
+        "type": "color",
+        "id": "secondary_btn_text",
+        "label": "Secondary Btn Text",
+        "default": "#022C3B"
+      },
+      {
+        "type": "color",
+        "id": "secondary_btn_hover_text",
+        "label": "Secondary Btn Hover Text",
+        "default": "#d2ecf4"
+      },
+     
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "default": "helvetica_n4",
+        "label": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "default": "helvetica_n4",
+        "label": "Body text"
+      }
+    ]
+  }, 
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social sharing image"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image",
+        "info": "Shown when sharing a link on social media. [Learn more](https://help.shopify.com/manual/using-themes/troubleshooting/showing-social-media-thumbnail-images/) about image thumbnails."
+      },
+      {
+        "type": "header",
+        "content": "Social sharing options"
+      },
+      {
+        "type": "checkbox",
+        "id": "social_sharing_blog",
+        "label": "Enable sharing for blog articles",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_facebook",
+        "label": "Share on Facebook",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_twitter",
+        "label": "Tweet on Twitter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_pinterest",
+        "label": "Pin on Pinterest",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Sharing links"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter link"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook link"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest link"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram link"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat link"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr link"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "Youtube link"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo link"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable cart notes",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px"
+      }
+    ]
+  }
+]

@@ -1,0 +1,102 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add "Newsletter" section on the Theme Editor.
+
+  Theme Store required settings
+  - Heading: title of the newsletter section
+  - Subheading: description of the newsletter section
+{%- endcomment -%}
+{% style %}
+  #newsletter_{{ section.id }}{
+    padding: {{section.settings.section_padding}}px 0;
+    background-color: {{ section.settings.section_bg }};
+  }
+  .sign_up_form_newsletter{
+    width:100%;
+    max-width:500px;
+    margin: 0 auto;
+  }
+{% endstyle %}
+<section id="newsletter_{{ section.id }}">
+  <div class="container text-center">
+    {% if section.settings.section_title != blank %}
+      <h2 class="fs-1">{{ section.settings.section_title | escape }}</h2>
+    {% endif %}
+    {% if section.settings.paragraph != blank %}
+      <div>{{ section.settings.paragraph }}</div>
+    {% endif %}
+    <div class="sign_up_form_newsletter">
+      {% form 'customer', id: 'newsletter-form', class: 'form' %}
+        {% if form.posted_successfully? %}
+          <div class="alert alert-success" role="alert">Thank you for subscribing!</div>
+        {% elsif form.errors %}
+          <div class="alert alert-danger" role="alert">
+            {{ form.errors.messages.email | escape }}
+          </div>
+        {% endif %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input type="hidden" name="contact[accepts_marketing]" value="true">
+        <div class="input-group mb-3">
+          <input
+            type="email"
+            name="contact[email]"
+            class="form-control"
+            placeholder="Enter your email"
+            aria-label="Email"
+            required
+          >
+          <div class="input-group-append">
+            <button class="vivewear_btn_primary" type="submit">Subscribe</button>
+          </div>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Heading",
+      "default": "Subscribe to our newsletter"
+    },
+    {
+      "type": "richtext",
+      "id": "paragraph",
+      "label": "Subheading",
+      "default": "<p>Any customers who sign up will have an account created for them in Shopify.</p>"
+    },
+    {
+      "type": "paragraph",
+      "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+        "type": "color",
+        "id": "section_bg",
+        "label": "background color",
+      },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "step": 1,
+      "max": 100,
+      "unit": "px",
+      "default": 50,
+      "label": "padding TB"
+    }
+  ],
+  "presets": [{
+    "name": "Newsletter",
+    "category": "Promotional"
+  }]
+}
+{% endschema %}

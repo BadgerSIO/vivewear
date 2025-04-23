@@ -1,0 +1,192 @@
+{% liquid
+  case section.blocks.size
+    when 1
+      assign column = 'col-md-12'
+    when 2
+      assign column = 'col-md-6'
+    else
+      assign column = 'col-md-4'
+  endcase
+%}
+{% style %}
+  {% for block in section.blocks %}
+    {% if block.type == 'footer_logo' %}
+      #footer-logo-{{ block.id }} img {
+        max-width: {{ block.settings.logo_size_desktop }}px;
+        height: auto;
+      }
+      @media (max-width: 767.98px) { /* Bootstrap 4 'sm' breakpoint for mobile */
+        #footer-logo-{{ block.id }} img {
+          max-width: {{ block.settings.logo_size_mobile }}px;
+        }
+      }
+      @media (min-width: 768px) and (max-width: 991.98px) { /* Bootstrap 4 'md' breakpoint for tablet */
+        #footer-logo-{{ block.id }} img {
+          max-width: {{ block.settings.logo_size_tablet }}px;
+        }
+      }
+    {% endif %}
+  {% endfor %}
+  .menu_items ul li a{
+    color:black
+  }
+  .menu_items ul li a:hover{
+    text-decoration:underline!important;
+    text-underline-offset:3px
+  }
+{% endstyle %}
+<footer class="bg-light text-dark py-4">
+  <div class="container">
+    <div class="row">
+      <!-- About Section -->
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'footer_logo' %}
+            <div class=" {{ column }} mb-3 footer_logo_wrapper" id="footer-logo-{{ block.id }}">
+              {% if block.settings.footer_logo != null %}
+                <img
+                  src="{{ block.settings.footer_logo | image_url: width: 500  }}"
+                  alt="{{ shop.name }}"
+                  width="100%"
+                  height="auto"
+                  style="max-width:{{ block.settings.logo_size}}px"
+                >
+              {% else %}
+                {{ 'image' | placeholder_svg_tag }}
+              {% endif %}
+            </div>
+          {% when 'menu_one' %}
+            <!-- Links Section -->
+            <div class="{{ column }} mb-3 menu_items">
+              <span class="fs-4">{{ block.settings.menu_title }}</span>
+              <ul class="list-unstyled mt-2">
+                {% for item in block.settings.footer_menu_one.links %}
+                  <li>
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <!-- Contact Section -->
+          {% when 'menu_two' %}
+            <div class=" {{ column }} mb-3 menu_items">
+              <span class="fs-4">{{ block.settings.menu_title }}</span>
+              <ul class="list-unstyled mt-2">
+                {% for item in block.settings.footer_menu_two.links %}
+                  <li>
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+    <div class="text-center border-top pt-3">
+      <p>{{ section.settings.footer_bottom }}</p>
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "footer_bottom",
+      "default":"© 2025 Your Company",
+      "label": "Footer bottom text",
+    }
+  ],
+  "blocks": [
+    {
+      "type": "footer_logo",
+      "name":"Footer logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "footer_logo",
+          "label": "Select footer logo"
+        },
+        {
+          "type": "range",
+          "id": "logo_size_mobile",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "unit": "px",
+          "default": 60,
+          "label": "Logo size (Mobile)"
+        },
+        {
+          "type": "range",
+          "id": "logo_size_tablet",
+          "min": 0,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "default": 80,
+          "label": "Logo size (Tablet)"
+        },
+        {
+          "type": "range",
+          "id": "logo_size_desktop",
+          "min": 0,
+          "max": 250,
+          "step": 5,
+          "unit": "px",
+          "default": 100,
+          "label": "Logo size (Desktop)"
+        }
+      ]
+    },
+    {
+      "type": "menu_one",
+      "name":"Select a menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Add a menu title",
+          "default":"Menu title"
+        },
+        {
+          "type": "link_list",
+          "id": "footer_menu_one",
+          "label": "Select menu"
+        }
+      ],
+      "limit": 1
+    },
+    {
+      "type": "menu_two",
+      "name":"Select a menu two",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Add a menu title",
+          "default":"Menu title"
+        },
+        {
+          "type": "link_list",
+          "id": "footer_menu_two",
+          "label": "Select menu"
+        }
+      ],
+      "limit": 1
+    },
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "category": "Footer",
+      "blocks": [
+        {
+          "type": "footer_logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

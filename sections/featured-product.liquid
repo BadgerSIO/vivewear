@@ -1,0 +1,194 @@
+{% liquid
+  assign product = all_products[section.settings.featured_product]
+%}
+{% style %}
+  #featured_product_{{ section.id }}{
+    background-color: {{ section.settings.featured_product_bg }};
+    padding: {{section.settings.section_padding}}px 0;
+  }
+{% endstyle %}
+<section id="featured_product_{{ section.id }}">
+  {% if product != blank %}
+    <div class="container">
+      <div class="mb-5 ">
+        <h2 class="fs-1">{{ section.settings.featured_product_section_title }}</h2>
+      </div>
+      <div class="featured_product_wrapper d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-5">
+        <div class="featured_product_img w-100 ">
+          <img src="{{ product.featured_image | image_url: width: 700 }}" width="100%" height="auto">
+        </div>
+        <div class="featured_product_info w-100">
+          <form
+            class="d-flex flex-column align-items-start gap-2"
+            action="/cart/add"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'title' %}
+                  <h3 class="fs-4">{{ product.title | escape }}</h3>
+                {% when 'variant' %}
+                  {% if product.variants.size > 1 %}
+                    <div class="d-flex gap-2 align-items-center">
+                      <label for="variant" class="text-nowrap">Variant :</label>
+                      <select name="id" id="variant" class="form-control d-inline-block">
+                        {% for variant in product.variants %}
+                          <option
+                            value="{{ variant.id }}"
+                            {% if variant == product.selected_or_first_available_variant %}
+                              selected
+                            {% endif %}
+                          >
+                            {{ variant.title }} - {{ variant.price | money }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  {% else %}
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  {% endif %}
+                {% when 'price' %}
+                  <p id="featured-product-price">{{ product.selected_or_first_available_variant.price | money }}</p>
+                {% when 'product_description' %}
+                  <div>{{ product.description }}</div>
+                {% when 'quantity' %}
+                  <div class="quantity-selector mb-1 mb-lg-3">
+                    <label for="quantity" class="form-label">Quantity :</label>
+                    <input
+                      type="number"
+                      id="quantity"
+                      name="quantity"
+                      value="1"
+                      min="1"
+                      class="form-control w-25 d-inline-block"
+                    >
+                  </div>
+                {% when 'add_to_cart' %}
+                  <button type="submit" class="vivewear_btn_primary">Add to Cart</button>
+              {% endcase %}
+            {% endfor %}
+          </form>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="container">
+      <p>&#128712; Please select a product first</p>
+    </div>
+  {% endif %}
+  <!-- JavaScript for dynamic price update -->
+  <script>
+    var productVariants = {
+      {% for variant in product.variants %}
+        "{{ variant.id }}": "{{ variant.price | money }}"{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    };
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var variantSelect = document.getElementById('variant');
+      var priceElement = document.getElementById('featured-product-price');
+
+      if (variantSelect && priceElement) {
+        // Listen for changes in the variant selector
+        variantSelect.addEventListener('change', function() {
+          var selectedOption = variantSelect.options[variantSelect.selectedIndex];
+          var selectedVariantId = selectedOption.value;
+          if (productVariants[selectedVariantId]) {
+            priceElement.textContent = productVariants[selectedVariantId];
+          }
+        });
+      }
+    });
+  </script>
+</section>
+{% schema %}
+{
+  "name": "featured product",
+  "settings": [
+    {
+        "type": "color",
+        "id": "featured_product_bg",
+        "label": "Set section background color",
+      },
+    {
+      "type": "text",
+      "id": "featured_product_section_title",
+      "label": "Section title",
+      "default":"featured product"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "select featured product"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "step": 2,
+      "max": 150,
+      "unit": "px",
+      "default": 50,
+      "label": "Section top bottom padding"
+    }
+
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name":"Product title",
+      "limit": 1
+    },
+    {
+      "type": "variant",
+      "name":"Product variant",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name":"Product price",
+      "limit": 1
+    },
+    {
+      "type": "product_description",
+      "name":"Product description",
+      "limit": 1
+    },
+    {
+      "type": "quantity",
+      "name":"Product quantity",
+      "limit": 1
+    },
+    {
+      "type": "add_to_cart",
+      "name":"Add to cart",
+      "limit": 1
+    },
+
+  ],
+  "presets": [{
+    "name": "featured product",
+    "category": "Product",
+    "blocks": [
+      {
+        "type": "title",
+      },
+      {
+        "type": "variant",
+      },
+      {
+        "type": "price"
+      },
+      {
+        "type": "quantity",
+      },
+      {
+        "type": "add_to_cart"
+      }
+    ]
+  }]
+}
+{% endschema %}
