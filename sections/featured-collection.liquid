@@ -24,33 +24,7 @@
     <!-- product card start -->
     <div class="product_collection_wrapper row">
       {% for product in collection.products limit: section.settings.number_of_product %}
-        <div class="col-sm-6 col-lg-{{ 12 |  divided_by:section.settings.number_of_product_column }} {% if product.images.size > 1 %} multi_img_product {% endif %} ">
-          <div class="border mb-3 product_card_vive">
-            <img
-              src="{{ product.featured_image | image_url: width: "400"  }}"
-
-              class="card-img-top primary_product_card_img"
-              alt="{{ product.title }}"
-              width="auto"
-              height="auto"
-            >
-            {% if product.images.size > 1 %}
-              <img
-                src="{{ product.images[1] | image_url: width: "400"  }}"
-
-                class="card-img-top secondary_product_card_img"
-                alt="{{ product.title }}"
-                width="auto"
-                height="auto"
-              >
-            {% endif %}
-            <div class="card-body p-3 d-flex flex-column gap-2 ">
-              <h5 class="card-title">{{ product.title }}</h5>
-              <h6 class="fs-5">{{ product.price | money }}</h6>
-              <a href="{{ product.url }}" class="vivewear_btn_secondary">View product</a>
-            </div>
-          </div>
-        </div>
+        {% render 'product-card', product: product %}
       {% endfor %}
     </div>
     {% if collection.products_count > section.settings.number_of_product %}
@@ -66,20 +40,20 @@
     {
       "type": "text",
       "id": "title",
-      "label": "Heading",
+      "label": "Heading"
     },
     {
       "type": "collection",
       "id": "collection",
       "label": "Collection"
     },
-     {
+    {
       "type": "range",
       "id": "number_of_product",
       "min": 1,
       "max": 20,
       "step": 1,
-      "default":6,
+      "default": 6,
       "label": "Set number of product to show"
     },
     {
@@ -88,12 +62,12 @@
       "min": 1,
       "max": 4,
       "step": 1,
-      "default":3,
+      "default": 3,
       "label": "Set product column"
     },
     {
       "type": "header",
-      "content": "Section style",
+      "content": "Section style"
     },
     {
       "type": "range",
@@ -105,11 +79,10 @@
       "default": 50,
       "label": "Section top bottom padding"
     }
-
   ],
   "presets": [
     {
-      "name": "Featured collection",
+      "name": "Featured collection"
     }
   ]
 }
