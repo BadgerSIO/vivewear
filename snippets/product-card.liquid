@@ -1,4 +1,19 @@
-<div class="col-sm-6 col-lg-{{ 12 |  divided_by:section.settings.number_of_product_column }} {% if product.images.size > 1 %} multi_img_product {% endif %} ">
+{% style %}
+  #featured_collection_{{ section.id }}{
+    padding: {{section.settings.section_padding}}px 0;
+  }
+  .product_card_vive{
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    background: white;
+  }
+  .product_card_vive .product_price{
+    font-size:18px;
+  }
+  .product_card_vive:hover{
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05);
+  }
+{% endstyle %}
+<div class="col-sm-6 col-lg-{{ 12 |  divided_by:section.settings.number_of_product_column_laptop }} col-xxl-{{ 12 |  divided_by:section.settings.number_of_product_column_desktop }} {% if product.images.size > 1 %} multi_img_product {% endif %} ">
   <div class="border mb-3 product_card_vive">
     <img
       src="{{ product.featured_image | image_url: width: "400"  }}"
@@ -19,8 +34,9 @@
       >
     {% endif %}
     <div class="card-body p-3 d-flex flex-column gap-2 ">
+      <span>{{ product.category.name }}</span>
       <h5 class="card-title">{{ product.title }}</h5>
-      <h6 class="fs-5">{{ product.price | money }}</h6>
+      <h6 class="product_price">{{ product.price | money }}</h6>
       <a href="{{ product.url }}" class="vivewear_btn_secondary">View product</a>
     </div>
   </div>
