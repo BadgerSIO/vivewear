@@ -5,9 +5,25 @@
   .product_card_vive{
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     background: white;
+    position: relative;
   }
   .product_card_vive .product_price{
     font-size:18px;
+  }
+  .product_card_vive .product_category{
+    position: absolute;
+    background: white;
+    padding: 5px 10px;
+    font-size:10px;
+    top: 5px;
+    left: 5px;
+    z-index:10;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    color: #022C3B;
+
   }
   .product_card_vive:hover{
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05);
@@ -34,7 +50,9 @@
       >
     {% endif %}
     <div class="card-body p-3 d-flex flex-column gap-2 ">
-      <span>{{ product.category.name }}</span>
+      {% if product.category != null %}
+        <span class="product_category">{{ product.category.name }}</span>
+      {% endif %}
       <h5 class="card-title">{{ product.title }}</h5>
       <h6 class="product_price">{{ product.price | money }}</h6>
       <a href="{{ product.url }}" class="vivewear_btn_secondary">View product</a>
