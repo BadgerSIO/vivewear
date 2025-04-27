@@ -81,11 +81,16 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        {% for product in collection.products %}
-          {% render 'product-card', product: product %}
-        {% endfor %}
-      </div>
+      {% paginate collection.products by 12 %}
+        <div class="row">
+          {% for product in collection.products %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+        </div>
+        <div class="pagination justify-content-center mt-5">
+          {% render 'pagination', paginate: paginate %}
+        </div>
+      {% endpaginate %}
     </div>
     {% comment %} product cards code end {% endcomment %}
   </div>
@@ -113,15 +118,19 @@
   "name": "Collection",
   "settings": [
     {
-      "type": "color",
-      "id": "section_bg",
-      "label": "Section bg color"
+      "type": "header",
+      "content": "product settings"
     },
     {
-      "type": "text",
-      "id": "title",
-      "label": "Heading"
+      "type": "range",
+      "id": "product_per_page",
+      "label": "Product per page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12
     },
+
     {
       "type": "range",
       "id": "number_of_product_column_laptop",
@@ -143,6 +152,11 @@
     {
       "type": "header",
       "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section bg color"
     },
     {
       "type": "range",
