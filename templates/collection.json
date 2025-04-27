@@ -11,8 +11,16 @@
   "sections": {
     "collection": {
       "type": "collection-template",
-      "settings": {}
+      "settings": {
+        "product_per_page": 12,
+        "number_of_product_column_laptop": 3,
+        "number_of_product_column_desktop": 4,
+        "section_bg": "#f4fafc",
+        "section_padding": 50
+      }
     }
   },
-  "order": ["collection"]
+  "order": [
+    "collection"
+  ]
 }
