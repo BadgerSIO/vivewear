@@ -1,0 +1,131 @@
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Image Column -->
+      <div class="col-12 col-md-6">
+        {% if product.featured_image %}
+          <img
+            src="{{ product.featured_image | image_url: width: 800 }}"
+            alt="{{ product.title }}"
+            class="img-fluid rounded"
+            width="100%"
+            height="auto"
+            id="main-image"
+          >
+          {% if product.images.size > 1 %}
+            <div class="thumbnail text-center mt-2 d-flex gap-2">
+              {% for image in product.images %}
+                <img onclick="change_image(this)" src="{{ image.src | img_url:'original' }}" width="100" height="auto">
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="bg-light rounded text-center py-5">No image available</div>
+        {% endif %}
+        <!-- .img-fluid ensures responsive images :contentReference[oaicite:3]{index=3} -->
+      </div>
+
+      <!-- Details Column -->
+      <div class="col-12 col-md-6">
+        <h1 class="h2 mb-3">{{ product.title }}</h1>
+        <h3 class="text-primary mb-3">
+          <span id="product_price">{{ product.selected_or_first_available_variant.price | money }}</span>
+        </h3>
+        <p class="mb-4">{{ product.description }}</p>
+
+        <!-- Variant Selector & Quantity -->
+        <form
+          method="post"
+          action="/cart/add"
+        >
+          {% if product.variants.size > 1 %}
+            <label for="variant-selector">Select variant</label>
+            <select
+              id="variant-selector"
+              name="id"
+              class="form-select w-auto mt-2"
+            >
+              {% for variant in product.variants %}
+                <option
+                  value="{{ variant.id }}"
+                  {% if forloop.first %}
+                    selected
+                  {% endif %}
+                >
+                  {{ variant.title }} — {{ variant.price | money }}
+                </option>
+              {% endfor %}
+            </select>
+          {% else %}
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+          {% endif %}
+          <!-- quantity & submit button… -->
+          <!-- Quantity input -->
+          <div class="w-full mt-3">
+            <label for="quantity">Select quantity</label>
+            <input
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              class="form-control w-auto mt-2"
+              id="quantity"
+            >
+
+            <!-- Add to Cart -->
+            <button
+              type="submit"
+              class="vivewear_btn_primary mt-3"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </form>
+        <!-- Bootstrap form components styled & accessible :contentReference[oaicite:4]{index=4} -->
+
+        <!-- Optional: Additional Info -->
+        <div class=" text-muted mt-3    ">
+          {% if product.sku != null %}
+            <p>SKU: {{ product.sku -}}</p>
+          {% endif %}
+
+          {% if product.vendor != null %}
+            <p>Vendor: {{ product.vendor }}</p>
+          {% endif %}
+          <!-- example of pulling vendor via Liquid :contentReference[oaicite:5]{index=5} -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- JavaScript for dynamic price update -->
+<script>
+    function change_image(image){
+    var main_image = document.getElementById("main-image");
+    main_image.src = image.src;
+  }
+  var productVariants = {
+    {% for variant in product.variants %}
+      "{{ variant.id }}": "{{ variant.price | money }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var variantSelect = document.getElementById('variant-selector');
+    var priceElement = document.getElementById('product_price');
+
+    if (!variantSelect || !priceElement) return;
+
+    // Update price on selector change
+    variantSelect.addEventListener('change', function () {
+      var selectedId = variantSelect.value;
+      var newPrice = productVariants[selectedId];
+
+      if (newPrice) {
+        priceElement.textContent = newPrice;
+      }
+    });
+  });
+</script>
