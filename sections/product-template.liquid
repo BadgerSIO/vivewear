@@ -1,4 +1,4 @@
-<section class="py-5">
+<section class="py-3 py-md-5">
   <div class="container">
     <div class="row g-4">
       <!-- Image Column -->
@@ -27,73 +27,89 @@
 
       <!-- Details Column -->
       <div class="col-12 col-md-6">
-        <h1 class="h2 mb-3">{{ product.title }}</h1>
-        <h3 class="text-primary mb-3">
-          <span id="product_price">{{ product.selected_or_first_available_variant.price | money }}</span>
-        </h3>
-        <p class="mb-4">{{ product.description }}</p>
-
-        <!-- Variant Selector & Quantity -->
         <form
           method="post"
           action="/cart/add"
         >
-          {% if product.variants.size > 1 %}
-            <label for="variant-selector">Select variant</label>
-            <select
-              id="variant-selector"
-              name="id"
-              class="form-select w-auto mt-2"
-            >
-              {% for variant in product.variants %}
-                <option
-                  value="{{ variant.id }}"
-                  {% if forloop.first %}
-                    selected
-                  {% endif %}
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'product_title' %}
+                <h1 class="h2 mb-3">{{ product.title }}</h1>
+              {% when 'product_price' %}
+                <h3 class="text-primary mb-3">
+                  <span id="product_price">{{ product.selected_or_first_available_variant.price | money }}</span>
+                </h3>
+              {% when 'product_description' %}
+                <p class="mb-4">{{ product.description }}</p>
+
+                <!-- Variant Selector & Quantity -->
+
+              {% when 'product_variant' %}
+                {% if product.variants.size > 1 %}
+                  <label for="variant-selector">Select variant</label>
+                  <select
+                    id="variant-selector"
+                    name="id"
+                    class="form-select w-auto mt-2"
+                  >
+                    {% for variant in product.variants %}
+                      <option
+                        value="{{ variant.id }}"
+                        {% if forloop.first %}
+                          selected
+                        {% endif %}
+                      >
+                        {{ variant.title }} — {{ variant.price | money }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                {% endif %}
+                <!-- quantity & submit button… -->
+                <!-- Quantity input -->
+              {% when 'product_quantity' %}
+                <div class="w-full mt-3">
+                  <label for="quantity">Select quantity</label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    value="1"
+                    min="1"
+                    class="form-control w-auto mt-2"
+                    id="quantity"
+                  >
+                </div>
+              {% when 'product_add_to_cart' %}
+                <!-- Add to Cart -->
+                <button
+                  type="submit"
+                  class="vivewear_btn_primary mt-3"
                 >
-                  {{ variant.title }} — {{ variant.price | money }}
-                </option>
-              {% endfor %}
-            </select>
-          {% else %}
-            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-          {% endif %}
-          <!-- quantity & submit button… -->
-          <!-- Quantity input -->
-          <div class="w-full mt-3">
-            <label for="quantity">Select quantity</label>
-            <input
-              type="number"
-              name="quantity"
-              value="1"
-              min="1"
-              class="form-control w-auto mt-2"
-              id="quantity"
-            >
+                  Add to Cart
+                </button>
 
-            <!-- Add to Cart -->
-            <button
-              type="submit"
-              class="vivewear_btn_primary mt-3"
-            >
-              Add to Cart
-            </button>
-          </div>
+                <!-- Bootstrap form components styled & accessible :contentReference[oaicite:4]{index=4} -->
+              {% when 'product_sku' %}
+                <!-- Optional: SKU Info -->
+                <div class=" text-muted mt-3    ">
+                  {% if product.sku != null %}
+                    <p>SKU: {{ product.sku -}}</p>
+                  {% endif %}
+
+                  <!-- example of pulling vendor via Liquid :contentReference[oaicite:5]{index=5} -->
+                </div>
+              {% when 'product_vendor' %}
+                <!-- Optional: Vendor Info -->
+                <div class=" text-muted mt-3    ">
+                  {% if product.vendor != null %}
+                    <p>Vendor: {{ product.vendor }}</p>
+                  {% endif %}
+                  <!-- example of pulling vendor via Liquid :contentReference[oaicite:5]{index=5} -->
+                </div>
+            {% endcase %}
+          {% endfor %}
         </form>
-        <!-- Bootstrap form components styled & accessible :contentReference[oaicite:4]{index=4} -->
-
-        <!-- Optional: Additional Info -->
-        <div class=" text-muted mt-3    ">
-          {% if product.sku != null %}
-            <p>SKU: {{ product.sku -}}</p>
-          {% endif %}
-
-          {% if product.vendor != null %}
-            <p>Vendor: {{ product.vendor }}</p>
-          {% endif %}
-          <!-- example of pulling vendor via Liquid :contentReference[oaicite:5]{index=5} -->
-        </div>
       </div>
     </div>
   </div>
@@ -129,3 +145,65 @@
     });
   });
 </script>
+{% schema %}
+{
+  "name": "single product",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product_title",
+      "name": "Product title"
+    },
+    {
+      "type": "product_description",
+      "name": "Product description"
+    },
+    {
+      "type": "product_price",
+      "name": "Product price"
+    },
+    {
+      "type": "product_variant",
+      "name": "Product variant"
+    },
+    {
+      "type": "product_quantity",
+      "name": "Product quantity"
+    },
+    {
+      "type": "product_add_to_cart",
+      "name": "Product add to cart"
+    },
+    {
+      "type": "product_sku",
+      "name": "Product SKU"
+    },
+    {
+      "type": "product_vendor",
+      "name": "Product vendor"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Single product",
+      "blocks": [
+        {
+          "type": "product_title"
+        },
+        {
+          "type": "product_price"
+        },
+        {
+          "type": "product_description"
+        },
+        {
+          "type": "product_variant"
+        },
+        {
+          "type": "product_add_to_cart"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
