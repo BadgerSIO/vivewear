@@ -1,0 +1,114 @@
+<section
+  class="product-recommendations"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related"
+>
+  <div class="container">
+    {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+      {% if recommendations.intent == 'related' %}
+        <h2>You may also like</h2>
+      {% elsif recommendations.intent == 'complementary' %}
+        <h2>Pair it with</h2>
+      {% endif %}
+
+      <div class="row">
+        {%- for product in recommendations.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% javascript %}
+  const handleIntersection = (entries, observer) => {
+    if (!entries[0].isIntersecting) return;
+
+    observer.unobserve(productRecommendationsSection);
+
+    const url = productRecommendationsSection.dataset.url;
+
+    fetch(url)
+      .then((response) => response.text())
+      .then((text) => {
+        const html = document.createElement('div');
+        html.innerHTML = text;
+        const recommendations = html.querySelector('.product-recommendations');
+
+        if (recommendations && recommendations.innerHTML.trim().length) {
+          productRecommendationsSection.innerHTML = recommendations.innerHTML;
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  const productRecommendationsSection = document.querySelector('.product-recommendations');
+  const observer = new IntersectionObserver(handleIntersection, { rootMargin: '0px 0px 200px 0px' });
+
+  observer.observe(productRecommendationsSection);
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "settings": [
+    {
+      "type": "header",
+      "content": "product settings"
+    },
+    {
+      "type": "range",
+      "id": "product_per_page",
+      "label": "Product per page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+
+    {
+      "type": "range",
+      "id": "number_of_product_column_laptop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Product column laptop"
+    },
+    {
+      "type": "range",
+      "id": "number_of_product_column_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 6,
+      "label": "Product column desktop"
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section bg color"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "step": 1,
+      "max": 100,
+      "unit": "px",
+      "default": 50,
+      "label": "Section top bottom padding"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product recommendations"
+    }
+  ]
+}
+{% endschema %}
