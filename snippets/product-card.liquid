@@ -56,8 +56,10 @@
       {% if product.category != null %}
         <span class="product_category">{{ product.category.name }}</span>
       {% endif %}
-      <p class="text-uppercase vendor">Vendor : {{ product.vendor }}</p>
-      <h5 class="card-title">{{ product.title }}</h5>
+      {% comment %} <p class="text-uppercase vendor">Vendor : {{ product.vendor }}</p>   {% endcomment %}
+      <h5 class="card-title">
+        <a href="{{ product.url }}">{{ product.title }}</a>
+      </h5>
       <div class="product-price">
         {% if product.compare_at_price > product.price %}
           {% if product.price_varies %}

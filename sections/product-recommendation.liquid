@@ -1,6 +1,12 @@
+{% style %}
+  #product-recommendation-{{section.id}}{
+      padding: {{section.settings.section_padding}}px 0;
+  }
+{% endstyle %}
 <section
   class="product-recommendations"
   data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=4&intent=related"
+  id="product-recommendation-{{section.id}}"
 >
   <div class="container">
     {%- if recommendations.performed? and recommendations.products_count > 0 -%}
@@ -10,7 +16,7 @@
         <h2>Pair it with</h2>
       {% endif %}
 
-      <div class="row">
+      <div class="row mt-3">
         {%- for product in recommendations.products -%}
           {% render 'product-card', product: product %}
         {%- endfor -%}
