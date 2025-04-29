@@ -1,3 +1,39 @@
+{% style %}
+  /* When the hidden radio is checked, style its label as “active” */
+  .product-variants .btn-outline-primary {
+    border-color: #022c3b !important;
+    border-radius: 2px;
+  }
+  .product-variants .btn-outline-primary:hover {
+    color: #fff !important;
+    background-color: #022c3b !important;
+    border-color: #022c3b !important;
+  }
+  .product-variants .btn {
+    color: #022c3b !important;
+  }
+  .btn-check:checked + .btn {
+    color: #fff !important;
+    background-color: #022c3b;
+    border-color: #022c3b;
+  }
+
+  /* When the hidden radio is disabled, fade out its label */
+  .btn-check:disabled + .btn {
+    background-color: #dddddd !important;
+    border-color: #dddddd !important;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  label[for='quantity'] {
+    margin-bottom: 0;
+    margin-right: 5px;
+  }
+  input[name='quantity'] {
+    max-width: 80px;
+  }
+{% endstyle %}
+<!-- sections/main-product.liquid -->
 <section class="py-3 py-md-5">
   <div class="container">
     <div class="row g-4">
@@ -5,305 +41,240 @@
       <div class="col-12 col-md-6">
         {% if product.featured_image %}
           <img
+            id="main-image"
             src="{{ product.featured_image | image_url: width: 800 }}"
             alt="{{ product.title }}"
             class="img-fluid rounded"
-            width="100%"
+            width="800"
             height="auto"
-            id="main-image"
           >
           {% if product.images.size > 1 %}
             <div class="thumbnail text-center mt-2 d-flex gap-2">
-              {% for image in product.images %}
-                <img onclick="change_image(this)" src="{{ image.src | img_url:'original' }}" width="100" height="auto">
+              {% for img in product.images %}
+                <img
+                  src="{{ img.src | image_url: width: 800 }}"
+                  width="100"
+                  height="auto"
+                  onclick="document.getElementById('main-image').src = this.src"
+                >
               {% endfor %}
             </div>
           {% endif %}
         {% else %}
           <div class="bg-light rounded text-center py-5">No image available</div>
         {% endif %}
-        <!-- .img-fluid ensures responsive images :contentReference[oaicite:3]{index=3} -->
       </div>
 
       <!-- Details Column -->
       <div class="col-12 col-md-6">
-        <form
-          method="post"
-          action="/cart/add"
-        >
+        <form method="post" action="/cart/add">
+          <!-- Render blocks as before -->
           {% for block in section.blocks %}
             {% case block.type %}
               {% when 'product_title' %}
                 <h1 class="h2 mb-3">{{ product.title }}</h1>
+
               {% when 'product_price' %}
-                <h3 class="text-primary mb-3">
+                <h3 class="mb-3">
                   <span id="product_price">{{ product.selected_or_first_available_variant.price | money }}</span>
                 </h3>
+
               {% when 'product_description' %}
                 <p class="mb-4">{{ product.description }}</p>
 
-                <!-- Variant Selector & Quantity -->
-
               {% when 'product_variant' %}
                 {% unless product.has_only_default_variant %}
-                  <div class="product-variants mt-5" id="product-variants">
+                  <div id="product-variants" class="product-variants mt-4">
                     {% for option in product.options_with_values %}
-                      {% liquid
-                        assign variants_available_arr = product.variants | map: 'available'
-                        assign variants_option1_arr = product.variants | map: 'option1'
-                        assign variants_option2_arr = product.variants | map: 'option2'
-                        assign variants_option3_arr = product.variants | map: 'option3'
-                      %}
                       <div class="option {{ option.name | downcase }} mt-3">
                         <h6 class="text-uppercase">{{ option.name }}</h6>
                         {% for value in option.values %}
-                          {% liquid
-                            assign option_disabled = true
-
-                            for option1_name in variants_option1_arr
-                              case option.position
-                                when 1
-                                  if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
-                                    assign option_disabled = false
-                                  endif
-                                when 2
-                                  if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
-                                    assign option_disabled = false
-                                  endif
-                                when 3
-                                  if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
-                                    assign option_disabled = false
-                                  endif
-                              endcase
-                            endfor
+                          {% assign btn_id = 'option'
+                            | append: option.position
+                            | append: '-'
+                            | append: value
+                            | handleize
                           %}
-                          <label class="radio">
-                            <input
-                              type="radio"
-                              name="{{- option.name | handleize -}}"
-                              value="{{- value | handleize | escape -}}"
-                              {% if option.selected_value == value %}
-                                checked
-                              {% endif %}
-                              {% if option_disabled %}
-                                disabled
-                              {% endif %}
-                            >
-                            <span
-                              {% if option_disabled %}
-                                title="unavailable"
-                              {% endif %}
-                            >
-                              {{ value | escape }}
-                            </span>
+
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            name="option{{ option.position }}"
+                            id="{{ btn_id }}"
+                            autocomplete="off"
+                            value="{{ value }}"
+                            data-option-position="{{ option.position }}"
+                          >
+                          <label class="btn btn-outline-primary me-2 mb-2" for="{{ btn_id }}">
+                            {{ value }}
                           </label>
                         {% endfor %}
                       </div>
                     {% endfor %}
                   </div>
-                  <select name="id" id="variant_selector" class="d-none">
-                    {% for variant in product.variants %}
-                      <option
-                        value="{{ variant.id }}"
-                        data-name="{{ variant.title | handleize | escape }}"
-                        {%- if variant == current_variant %}
-                          selected
-                        {%- endif -%}
-                        {%- if variant.available == false %}
-                          data-sold="true"
-                        {% endif %}
-                      >
-                        {{ variant.title | escape }}
-                      </option>
-                    {% endfor %}
-                  </select>
                 {% endunless %}
 
-                <!-- Quantity input -->
               {% when 'product_quantity' %}
-                <div class="w-full mt-3">
-                  <label for="quantity">Select quantity</label>
+                <div class="w-full mt-3 d-flex align-items-center gap-3">
+                  <label for="quantity" class="form-label">Quantity</label>
                   <input
+                    id="quantity"
                     type="number"
                     name="quantity"
                     value="1"
                     min="1"
-                    class="form-control w-auto mt-2"
-                    id="quantity"
+                    class="form-control w-auto "
                   >
                 </div>
+
               {% when 'product_add_to_cart' %}
-                <!-- Add to Cart -->
                 <button
                   type="submit"
+                  name="add"
                   class="vivewear_btn_primary mt-3"
                 >
                   Add to Cart
                 </button>
 
-                <!-- Bootstrap form components styled & accessible :contentReference[oaicite:4]{index=4} -->
               {% when 'product_sku' %}
-                <!-- Optional: SKU Info -->
-                <div class=" text-muted mt-3    ">
-                  {% if product.sku != null %}
-                    <p>SKU: {{ product.sku -}}</p>
-                  {% endif %}
+                {% if product.sku %}
+                  <p class="text-muted mt-3">SKU: {{ product.sku }}</p>
+                {% endif %}
 
-                  <!-- example of pulling vendor via Liquid :contentReference[oaicite:5]{index=5} -->
-                </div>
               {% when 'product_vendor' %}
-                <!-- Optional: Vendor Info -->
-                <div class=" text-muted mt-3    ">
-                  {% if product.vendor != null %}
-                    <p>Vendor: {{ product.vendor }}</p>
-                  {% endif %}
-                  <!-- example of pulling vendor via Liquid :contentReference[oaicite:5]{index=5} -->
-                </div>
+                {% if product.vendor %}
+                  <p class="text-muted mt-3">Vendor: {{ product.vendor }}</p>
+                {% endif %}
             {% endcase %}
           {% endfor %}
+
+          <!-- Hidden select so form submits the correct variant ID -->
+          <select name="id" id="variant_selector" class="d-none">
+            {% for v in product.variants %}
+              <option
+                value="{{ v.id }}"
+                data-sold="{{ v.available | json }}"
+              >
+                {{ v.title }}
+              </option>
+            {% endfor %}
+          </select>
         </form>
       </div>
     </div>
   </div>
-</section>
-<!-- JavaScript for dynamic price update -->
 
-<script>
-    function change_image(image){
-    var main_image = document.getElementById("main-image");
-    main_image.src = image.src;
-  }
-  var productVariants = {
-    {% for variant in product.variants %}
-      "{{ variant.id }}": "{{ variant.price | money }}"{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  };
-</script>
-
-{% comment %}
+  <!-- Expose all variants to JS -->
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var variantSelect = document.getElementById('variant-selector');
-      var priceElement = document.getElementById('product_price');
+    const VARIANTS = [
+      {% for v in product.variants %}
+        {
+          id: {{ v.id }},
+          available: {{ v.available | json }},
+          options: [
+            "{{ v.option1 | escape }}",
+            "{{ v.option2 | escape }}",
+            "{{ v.option3 | escape }}"
+          ],
+          price: {{ v.price | money | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ];
+  </script>
 
-      if (!variantSelect || !priceElement) return;
-
-      // Update price on selector change
-      variantSelect.addEventListener('change', function () {
-        var selectedId = variantSelect.value;
-        var newPrice = productVariants[selectedId];
-
-        if (newPrice) {
-          priceElement.textContent = newPrice;
+  <!-- JS: update variant, price, button & enable/disable options -->
+  <script>
+    function updateVariant() {
+      // 1. Gather current selections
+      const sel = {};
+      document.querySelectorAll('[data-option-position]').forEach((elm) => {
+        if (elm.checked) {
+          sel[elm.dataset.optionPosition] = elm.value;
         }
       });
+
+      // 2. Find matching variant
+      const match = VARIANTS.find((v) => Object.keys(sel).every((pos) => v.options[pos - 1] === sel[pos]));
+
+      if (match) {
+        // 3a. Update hidden select
+        document.getElementById('variant_selector').value = match.id;
+
+        // 3b. Update price
+        document.getElementById('product_price').textContent = match.price;
+
+        // 3c. Toggle Add to Cart button
+        const btn = document.querySelector('button[name="add"]');
+        if (!match.available) {
+          btn.disabled = true;
+          btn.textContent = 'Sold Out';
+        } else {
+          btn.disabled = false;
+          btn.textContent = 'Add to Cart';
+        }
+      }
+
+      // 4. Enable/disable option radios for each group
+      document.querySelectorAll('[data-option-position]').forEach((elm) => {
+        const pos = Number(elm.dataset.optionPosition);
+        // build a test selection: all already chosen + this candidate
+        const test = { ...sel, [pos]: elm.value };
+
+        // see if any variant matches AND is available
+        const ok = VARIANTS.some((v) => Object.keys(test).every((p) => v.options[p - 1] === test[p]) && v.available);
+        elm.disabled = !ok;
+        if (!ok && elm.checked) elm.checked = false;
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // ← Add this auto-select logic first:
+      if (!document.querySelector('[data-option-position]:checked')) {
+        // Pick the first in-stock variant (or fallback to the very first)
+        const firstAvailable = VARIANTS.find((v) => v.available) || VARIANTS[0];
+        // Check its option radios (option1 = color, option2 = size, ...)
+        firstAvailable.options.forEach((opt, idx) => {
+          const selector = `input[name="option${idx + 1}"][value="${opt}"]`;
+          const input = document.querySelector(selector);
+          if (input) input.checked = true;
+        });
+      }
+
+      // ← Your existing initial sync
+      updateVariant();
+
+      // ← And then re-sync on changes as before
+      document
+        .querySelectorAll('[data-option-position]')
+        .forEach((elm) => elm.addEventListener('change', updateVariant));
     });
   </script>
-{% endcomment %}
-
-<script>
-  window.addEventListener('DOMContentLoaded', async () => {
-    const product_url = '{{ product.url }}';
-    const variantSelector = async () => {
-      const options = document.querySelectorAll('#product-variants .option');
-      let option_value = [];
-      options.forEach((elm) => {
-        let selected = elm.querySelector('input:checked').value;
-        option_value.push(selected);
-      });
-      option_value = option_value.join('-');
-      //   console.log(option_value);
-
-      const selOptions = document.querySelectorAll('#variant_selector option');
-      selOptions.forEach((elm) => {
-        const name = elm.dataset.name;
-        const sold = elm.dataset.sold;
-        elm.removeAttribute('selected');
-        if (name == option_value) {
-          const btn = document.querySelector('[name="add"]');
-          if (sold) {
-            btn.setAttribute('disabled', 'true');
-            btn.innerText = 'Sold Out';
-          } else {
-            elm.setAttribute('selected', 'true');
-            btn.removeAttribute('disabled');
-            btn.innerText = 'Add To Cart';
-          }
-        }
-      });
-    };
-    await variantSelector();
-    const optionSelectors = document.querySelectorAll('#product-variants label.radio');
-    optionSelectors.forEach((elm) => {
-      elm.addEventListener('click', () => {
-        variantSelector().then(() => {
-          let variantId = document.querySelector('#variant_selector');
-          variantId = variantId.value;
-          let url = `${product_url}?variant=${variantId}`;
-          window.history.replaceState({}, '', url);
-        });
-      });
-    });
-  });
-</script>
+</section>
 
 {% schema %}
 {
   "name": "single product",
   "settings": [],
   "blocks": [
-    {
-      "type": "product_title",
-      "name": "Product title"
-    },
-    {
-      "type": "product_description",
-      "name": "Product description"
-    },
-    {
-      "type": "product_price",
-      "name": "Product price"
-    },
-    {
-      "type": "product_variant",
-      "name": "Product variant"
-    },
-    {
-      "type": "product_quantity",
-      "name": "Product quantity"
-    },
-    {
-      "type": "product_add_to_cart",
-      "name": "Product add to cart"
-    },
-    {
-      "type": "product_sku",
-      "name": "Product SKU"
-    },
-    {
-      "type": "product_vendor",
-      "name": "Product vendor"
-    }
+    { "type": "product_title", "name": "Product title" },
+    { "type": "product_price", "name": "Product price" },
+    { "type": "product_description", "name": "Product description" },
+    { "type": "product_variant", "name": "Product variant" },
+    { "type": "product_quantity", "name": "Product quantity" },
+    { "type": "product_add_to_cart", "name": "Product add to cart" },
+    { "type": "product_sku", "name": "Product SKU" },
+    { "type": "product_vendor", "name": "Product vendor" }
   ],
   "presets": [
     {
       "name": "Single product",
       "blocks": [
-        {
-          "type": "product_title"
-        },
-        {
-          "type": "product_price"
-        },
-        {
-          "type": "product_description"
-        },
-        {
-          "type": "product_variant"
-        },
-        {
-          "type": "product_add_to_cart"
-        }
+        { "type": "product_title" },
+        { "type": "product_price" },
+        { "type": "product_description" },
+        { "type": "product_variant" },
+        { "type": "product_quantity" },
+        { "type": "product_add_to_cart" }
       ]
     }
   ]
