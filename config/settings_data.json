@@ -123,7 +123,9 @@
         "settings": {
           "title": "Our Featured Collection",
           "collection": "featured-collection",
-          "number_of_product": 8,
+          "number_of_product": 6,
+          "number_of_product_column_laptop": 3,
+          "number_of_product_column_desktop": 3,
           "section_padding": 100
         }
       },
