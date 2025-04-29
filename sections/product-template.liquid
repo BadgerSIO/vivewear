@@ -45,28 +45,80 @@
                 <!-- Variant Selector & Quantity -->
 
               {% when 'product_variant' %}
-                {% if product.variants.size > 1 %}
-                  <label for="variant-selector">Select variant</label>
-                  <select
-                    id="variant-selector"
-                    name="id"
-                    class="form-select w-auto mt-2"
-                  >
+                {% unless product.has_only_default_variant %}
+                  <div class="product-variants mt-5" id="product-variants">
+                    {% for option in product.options_with_values %}
+                      {% liquid
+                        assign variants_available_arr = product.variants | map: 'available'
+                        assign variants_option1_arr = product.variants | map: 'option1'
+                        assign variants_option2_arr = product.variants | map: 'option2'
+                        assign variants_option3_arr = product.variants | map: 'option3'
+                      %}
+                      <div class="option {{ option.name | downcase }} mt-3">
+                        <h6 class="text-uppercase">{{ option.name }}</h6>
+                        {% for value in option.values %}
+                          {% liquid
+                            assign option_disabled = true
+
+                            for option1_name in variants_option1_arr
+                              case option.position
+                                when 1
+                                  if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                                    assign option_disabled = false
+                                  endif
+                                when 2
+                                  if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                                    assign option_disabled = false
+                                  endif
+                                when 3
+                                  if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                                    assign option_disabled = false
+                                  endif
+                              endcase
+                            endfor
+                          %}
+                          <label class="radio">
+                            <input
+                              type="radio"
+                              name="{{- option.name | handleize -}}"
+                              value="{{- value | handleize | escape -}}"
+                              {% if option.selected_value == value %}
+                                checked
+                              {% endif %}
+                              {% if option_disabled %}
+                                disabled
+                              {% endif %}
+                            >
+                            <span
+                              {% if option_disabled %}
+                                title="unavailable"
+                              {% endif %}
+                            >
+                              {{ value | escape }}
+                            </span>
+                          </label>
+                        {% endfor %}
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <select name="id" id="variant_selector" class="d-none">
                     {% for variant in product.variants %}
                       <option
                         value="{{ variant.id }}"
-                        {% if forloop.first %}
+                        data-name="{{ variant.title | handleize | escape }}"
+                        {%- if variant == current_variant %}
                           selected
+                        {%- endif -%}
+                        {%- if variant.available == false %}
+                          data-sold="true"
                         {% endif %}
                       >
-                        {{ variant.title }} — {{ variant.price | money }}
+                        {{ variant.title | escape }}
                       </option>
                     {% endfor %}
                   </select>
-                {% else %}
-                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-                {% endif %}
-                <!-- quantity & submit button… -->
+                {% endunless %}
+
                 <!-- Quantity input -->
               {% when 'product_quantity' %}
                 <div class="w-full mt-3">
@@ -115,6 +167,7 @@
   </div>
 </section>
 <!-- JavaScript for dynamic price update -->
+
 <script>
     function change_image(image){
     var main_image = document.getElementById("main-image");
@@ -127,24 +180,73 @@
   };
 </script>
 
+{% comment %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var variantSelect = document.getElementById('variant-selector');
+      var priceElement = document.getElementById('product_price');
+
+      if (!variantSelect || !priceElement) return;
+
+      // Update price on selector change
+      variantSelect.addEventListener('change', function () {
+        var selectedId = variantSelect.value;
+        var newPrice = productVariants[selectedId];
+
+        if (newPrice) {
+          priceElement.textContent = newPrice;
+        }
+      });
+    });
+  </script>
+{% endcomment %}
+
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var variantSelect = document.getElementById('variant-selector');
-    var priceElement = document.getElementById('product_price');
+  window.addEventListener('DOMContentLoaded', async () => {
+    const product_url = '{{ product.url }}';
+    const variantSelector = async () => {
+      const options = document.querySelectorAll('#product-variants .option');
+      let option_value = [];
+      options.forEach((elm) => {
+        let selected = elm.querySelector('input:checked').value;
+        option_value.push(selected);
+      });
+      option_value = option_value.join('-');
+      //   console.log(option_value);
 
-    if (!variantSelect || !priceElement) return;
-
-    // Update price on selector change
-    variantSelect.addEventListener('change', function () {
-      var selectedId = variantSelect.value;
-      var newPrice = productVariants[selectedId];
-
-      if (newPrice) {
-        priceElement.textContent = newPrice;
-      }
+      const selOptions = document.querySelectorAll('#variant_selector option');
+      selOptions.forEach((elm) => {
+        const name = elm.dataset.name;
+        const sold = elm.dataset.sold;
+        elm.removeAttribute('selected');
+        if (name == option_value) {
+          const btn = document.querySelector('[name="add"]');
+          if (sold) {
+            btn.setAttribute('disabled', 'true');
+            btn.innerText = 'Sold Out';
+          } else {
+            elm.setAttribute('selected', 'true');
+            btn.removeAttribute('disabled');
+            btn.innerText = 'Add To Cart';
+          }
+        }
+      });
+    };
+    await variantSelector();
+    const optionSelectors = document.querySelectorAll('#product-variants label.radio');
+    optionSelectors.forEach((elm) => {
+      elm.addEventListener('click', () => {
+        variantSelector().then(() => {
+          let variantId = document.querySelector('#variant_selector');
+          variantId = variantId.value;
+          let url = `${product_url}?variant=${variantId}`;
+          window.history.replaceState({}, '', url);
+        });
+      });
     });
   });
 </script>
+
 {% schema %}
 {
   "name": "single product",
