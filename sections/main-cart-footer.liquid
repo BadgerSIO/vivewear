@@ -1,0 +1,54 @@
+{% schema %}
+{ "name": "Cart Footer" }
+{% endschema %}
+
+<div class="bg-light py-4">
+  <div class="container">
+    <div class="row gy-3">
+      <!-- Order Summary -->
+      <div class="col-12 col-md-6">
+        <h4>Order summary</h4>
+        <p>
+          Subtotal: <strong>{{ cart.total_price | money }}</strong>
+        </p>
+        {% if cart.cart_level_discount_applications.size > 0 %}
+          <ul class="list-unstyled ps-0">
+            {% for discount in cart.cart_level_discount_applications %}
+              <li>{{ discount.title }} — -{{ discount.total_allocated_amount | money }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <hr>
+        <p>
+          <strong>Total: {{ cart.total_price | money }}</strong>
+        </p>
+      </div>
+
+      <!-- Notes & Checkout -->
+      <div class="col-12 col-md-6">
+        <form action="{{ routes.cart_url }}" method="post" id="cart">
+          <div class="mb-3">
+            <label for="CartNote" class="form-label">Special instructions</label>
+            <textarea
+              id="CartNote"
+              name="note"
+              form="cart"
+              class="form-control"
+              rows="3"
+            >{{ cart.note }}</textarea>
+          </div>
+          <div class="d-grid">
+            <button
+              type="submit"
+              name="checkout"
+              class="btn btn-success btn-lg"
+              form="cart"
+            >
+              Checkout
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

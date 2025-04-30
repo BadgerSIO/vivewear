@@ -1,26 +1,46 @@
+{% style %}
+  .vive-logo {
+    width: 100%;
+    max-width: 120px;
+  }
+  .cart-counter {
+    position: relative;
+  }
+  .cart-counter .counter {
+    font-size: 12px;
+    background: #000000;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    transform: translate(80%, -50%);
+    border-radius: 50%;
+  }
+{% endstyle %}
 {% liquid
   assign logo = section.settings.logo
   assign menu = section.settings.menu
   assign searchbar = section.settings.enable_searchbar
 %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary py-3">
-  <div class="container gap-5">
+  <div class="container-fluid gap-5">
     {% if logo != null %}
-      <img src="{{ logo | image_url: width: 120 }}" alt="{{ shop.name | escape  }}" width="auto" height="auto">
+      <img
+        class="vive-logo"
+        src="{{ logo | image_url: width: 120 }}"
+        alt="{{ shop.name | escape  }}"
+        width="auto"
+        height="auto"
+      >
     {% else %}
       <a class="navbar-brand" href="#">{{ shop.name | escape }}</a>
     {% endif %}
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% for link in menu.links %}
@@ -58,18 +78,48 @@
         </form>
       {% endif %}
     </div>
+    <div class="actions d-flex align-items-center">
+      <div class="cart-counter mx-5">
+        <a href="{{ routes.cart_url }}" class="d-flex flex-column">
+          {% if cart.item_count > 0 %}
+            <span class="shopping-cart">
+              {% render 'icons', icon: 'cart' %}
+            </span>
+            <span class="counter">{{ cart.item_count }}</span>
+
+          {% else %}
+            <span class="shopping-cart icon-sm">
+              {% render 'icons', icon: 'cart-empty' %}
+            </span>
+          {% endif %}
+          <span style="font-size:12px">Cart</span>
+        </a>
+      </div>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
   </div>
 </nav>
 {% schema %}
 {
-"name":"Header",
-  "settings":[
+  "name": "Header",
+  "settings": [
     {
-      "type":"image_picker",
-      "id":"logo",
+      "type": "image_picker",
+      "id": "logo",
       "label": "Select logo",
-      "info":"Max size 200X200"
+      "info": "Max size 200X200"
     },
+
     {
       "type": "link_list",
       "id": "menu",
@@ -83,7 +133,7 @@
       "type": "checkbox",
       "id": "enable_searchbar",
       "label": "Enable searchbar",
-      "default":true
+      "default": true
     }
   ]
 }

@@ -74,3 +74,17 @@
   background: var(--secondary-btn-hover-background);
   color: var(--secondary-btn-hover-text);
 }
+/* Stick the header right below the announcement */
+[id^="shopify-section-sections--"][id$="__header"] {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+/* best practice: size via CSS rather than attributes */
+.icon-sm {
+  width: 30px;
+  height: 30px;
+  /* Optional: preserve aspect ratio */
+  max-width: 100%;
+  max-height: 100%;
+}
