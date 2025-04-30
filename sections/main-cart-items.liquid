@@ -2,74 +2,139 @@
 { "name": "Cart Items" }
 {% endschema %}
 
-<div class="container my-4">
-  {% if cart.item_count == 0 %}
-    <div class="text-center py-5">
-      <h2>Your cart is empty</h2>
-      <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline-primary mt-3"> Continue shopping </a>
-    </div>
-  {% else %}
-    <form action="{{ routes.cart_url }}" method="post" id="cart">
-      <div class="table-responsive mb-4">
-        <table class="table align-middle">
-          <thead class="table-light">
-            <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Total</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in cart.items %}
-              <tr>
-                <td>
-                  <div class="d-flex align-items-center">
-                    {% if item.image %}
-                      <img
-                        src="{{ item.image | image_url: width: 100 }}"
-                        alt="{{ item.product.title }}"
-                        class="img-thumbnail me-3"
-                        width="80"
-                        height="80"
+<section class="py-5">
+  <div class="container-fluid d-xl-flex gap-5 justify-content-between py-5">
+    <div class="flex-fill">
+      {% if cart.item_count == 0 %}
+        <div class="text-center py-5">
+          <h2>Your cart is empty</h2>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline-primary mt-3">
+            Continue shopping
+          </a>
+        </div>
+      {% else %}
+        <form action="{{ routes.cart_url }}" method="post" id="cart">
+          <div class="table-responsive mb-4">
+            <table class="table align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Product</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in cart.items %}
+                  <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        {% if item.image %}
+                          <img
+                            src="{{ item.image | image_url: width: 100 }}"
+                            alt="{{ item.product.title }}"
+                            class="img-thumbnail me-3"
+                            width="80"
+                            height="80"
+                          >
+                        {% endif %}
+                        <div>
+                          <a href="{{ item.url }}" class="text-decoration-none">
+                            {{ item.product.title }}
+                            {% unless item.variant.title == 'Default Title' %}—{{ item.variant.title }}{% endunless %}
+                          </a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ item.final_line_price | divided_by: item.quantity | money }}</td>
+                    <td>
+                      {% if item.variant.inventory_management == 'shopify' %}
+                        {% assign max_qty = item.variant.inventory_quantity %}
+                      {% else %}
+                        {% assign max_qty = null %}
+                      {% endif %}
+                      <input
+                        type="number"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="1"
+                        class="form-control w-auto"
+                        style="max-width:70px;"
+                        {% if max_qty %}
+                          max="{{ max_qty }}"
+                        {% endif %}
                       >
-                    {% endif %}
-                    <div>
-                      <a href="{{ item.url }}" class="text-decoration-none">
-                        {{ item.product.title }}
-                        {% unless item.variant.title == 'Default Title' %}—{{ item.variant.title }}{% endunless %}
+                      {% if max_qty and item.quantity > max_qty %}
+                        <small class="text-danger">Max {{ max_qty }} in stock</small>
+                      {% endif %}
+                    </td>
+                    <td>{{ item.final_line_price | money }}</td>
+                    <td>
+                      <a
+                        href="{{ item.url_to_remove }}"
+                        class="btn btn-link text-danger p-0"
+                      >
+                        {% render 'icons', icon: 'trash' %}
                       </a>
-                    </div>
-                  </div>
-                </td>
-                <td>{{ item.final_line_price | divided_by: item.quantity | money }}</td>
-                <td>
-                  <input
-                    type="number"
-                    name="updates[]"
-                    value="{{ item.quantity }}"
-                    min="0"
-                    class="form-control w-auto"
-                    style="max-width:80px;"
-                  >
-                </td>
-                <td>{{ item.final_line_price | money }}</td>
-                <td>
-                  <a
-                    href="{{ item.url_to_remove }}"
-                    class="btn btn-link text-danger p-0"
-                  >
-                    Remove
-                  </a>
-                </td>
-              </tr>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="vivewear_btn_primary">Update cart</button>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+    <div class="row gy-3">
+      <!-- Order Summary -->
+      <div class="">
+        <h4>Order summary</h4>
+        <p>
+          Subtotal: <strong>{{ cart.total_price | money }}</strong>
+        </p>
+        {% if cart.cart_level_discount_applications.size > 0 %}
+          <ul class="list-unstyled ps-0">
+            {% for discount in cart.cart_level_discount_applications %}
+              <li>{{ discount.title }} — -{{ discount.total_allocated_amount | money }}</li>
             {% endfor %}
-          </tbody>
-        </table>
+          </ul>
+        {% endif %}
+        <hr>
+        <p>
+          <strong>Total: {{ cart.total_price | money }}</strong>
+        </p>
       </div>
 
-      <button type="submit" class="btn btn-primary">Update cart</button>
-    </form>
-  {% endif %}
-</div>
+      <!-- Notes & Checkout -->
+      <div class="">
+        <form action="{{ routes.cart_url }}" method="post" id="cart">
+          <div class="mb-3">
+            <label for="CartNote" class="form-label">Special instructions</label>
+            <textarea
+              id="CartNote"
+              name="note"
+              form="cart"
+              class="form-control"
+              rows="3"
+            >{{ cart.note }}</textarea>
+          </div>
+          <div class="d-grid">
+            <button
+              type="submit"
+              name="checkout"
+              class="vivewear_btn_primary w-full"
+              form="cart"
+            >
+              Checkout
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

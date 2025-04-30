@@ -1,27 +1,3 @@
-{% style %}
-  .vive-logo {
-    width: 100%;
-    max-width: 120px;
-  }
-  .cart-counter {
-    position: relative;
-  }
-  .cart-counter .counter {
-    font-size: 12px;
-    background: #000000;
-    color: white;
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    transform: translate(80%, -50%);
-    border-radius: 50%;
-  }
-{% endstyle %}
 {% liquid
   assign logo = section.settings.logo
   assign menu = section.settings.menu
@@ -72,14 +48,21 @@
         {% endfor %}
       </ul>
       {% if searchbar %}
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Type here ..." aria-label="Search">
+        <form action="{{ routes.search_url }}" class="d-flex" role="search">
+          <input
+            class="form-control me-2"
+            name="q"
+            type="search"
+            placeholder="Type here ..."
+            aria-label="Search"
+            value="{{ search.terms | escape }}"
+          >
           <button class="vivewear_btn_primary" type="submit">Search</button>
         </form>
       {% endif %}
     </div>
-    <div class="actions d-flex align-items-center">
-      <div class="cart-counter mx-5">
+    <div class="actions">
+      <div class="cart-counter">
         <a href="{{ routes.cart_url }}" class="d-flex flex-column">
           {% if cart.item_count > 0 %}
             <span class="shopping-cart">
