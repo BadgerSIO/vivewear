@@ -84,7 +84,9 @@
       {% paginate collection.products by 12 %}
         <div class="row">
           {% for product in collection.products %}
-            {% render 'product-card', product: product %}
+            <div class="col-sm-6 col-xl-{{ 12 |  divided_by:section.settings.number_of_product_column_laptop }} col-xxl-{{ 12 |  divided_by:section.settings.number_of_product_column_desktop }} {% if product.images.size > 1 %} multi_img_product {% endif %} ">
+              {% render 'product-card', product: product %}
+            </div>
           {% endfor %}
         </div>
         <div class="pagination justify-content-center mt-5">

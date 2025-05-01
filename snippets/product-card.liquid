@@ -33,51 +33,50 @@
     text-align: right;
   }
 {% endstyle %}
-<div class="col-sm-6 col-xl-{{ 12 |  divided_by:section.settings.number_of_product_column_laptop }} col-xxl-{{ 12 |  divided_by:section.settings.number_of_product_column_desktop }} {% if product.images.size > 1 %} multi_img_product {% endif %} ">
-  <div class="border mb-3 product_card_vive">
-    <img
-      src="{{ product.featured_image | image_url: width: "400"  }}"
 
-      class="card-img-top primary_product_card_img"
+<div class="border mb-3 product_card_vive">
+  <img
+    src="{{ product.featured_image | image_url: width: "400"  }}"
+
+    class="card-img-top primary_product_card_img"
+    alt="{{ product.title }}"
+    width="auto"
+    height="auto"
+  >
+  {% if product.images.size > 1 %}
+    <img
+      src="{{ product.images[1] | image_url: width: "400"  }}"
+      class="card-img-top secondary_product_card_img"
       alt="{{ product.title }}"
       width="auto"
       height="auto"
     >
-    {% if product.images.size > 1 %}
-      <img
-        src="{{ product.images[1] | image_url: width: "400"  }}"
-        class="card-img-top secondary_product_card_img"
-        alt="{{ product.title }}"
-        width="auto"
-        height="auto"
-      >
+  {% endif %}
+  <div class="card-body p-3 d-flex flex-column gap-2 ">
+    {% if product.category != null %}
+      <span class="product_category">{{ product.category.name }}</span>
     {% endif %}
-    <div class="card-body p-3 d-flex flex-column gap-2 ">
-      {% if product.category != null %}
-        <span class="product_category">{{ product.category.name }}</span>
-      {% endif %}
-      {% comment %} <p class="text-uppercase vendor">Vendor : {{ product.vendor }}</p>   {% endcomment %}
-      <h5 class="card-title">
-        <a href="{{ product.url }}">{{ product.title }}</a>
-      </h5>
-      <div class="product-price">
-        {% if product.compare_at_price > product.price %}
-          {% if product.price_varies %}
-            <span>From {{ product.price_min | money }}</span> - <span>{{ product.price_max | money }}</span>
-          {% else %}
-            <span class="sale_price">{{ product.price | money }}</span> -
-            <span class="compare-price">{{ product.compare_at_price | money }}</span>
-          {% endif %}
+    {% comment %} <p class="text-uppercase vendor">Vendor : {{ product.vendor }}</p>   {% endcomment %}
+    <h5 class="card-title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h5>
+    <div class="product-price">
+      {% if product.compare_at_price > product.price %}
+        {% if product.price_varies %}
+          <span>From {{ product.price_min | money }}</span> - <span>{{ product.price_max | money }}</span>
         {% else %}
-          {% if product.price_varies %}
-            <span>From {{ product.price_min | money }}</span> - <span>{{ product.price_max | money }}</span>
-          {% else %}
-            <span>{{ product.price | money }}</span>
-          {% endif %}
+          <span class="sale_price">{{ product.price | money }}</span> -
+          <span class="compare-price">{{ product.compare_at_price | money }}</span>
         {% endif %}
-      </div>
-
-      <a href="{{ product.url }}" class="vivewear_btn_secondary">View product</a>
+      {% else %}
+        {% if product.price_varies %}
+          <span>From {{ product.price_min | money }}</span> - <span>{{ product.price_max | money }}</span>
+        {% else %}
+          <span>{{ product.price | money }}</span>
+        {% endif %}
+      {% endif %}
     </div>
+
+    <a href="{{ product.url }}" class="vivewear_btn_secondary">View product</a>
   </div>
 </div>

@@ -1,0 +1,84 @@
+{% style %}
+  .title_search {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+{% endstyle %}
+{% comment %} group results by type and get counts {% endcomment %}
+{% assign product_results = search.results | where: 'object_type', 'product' %}
+{% assign article_results = search.results | where: 'object_type', 'article' %}
+{% assign products_count = product_results.size %}
+{% assign articles_count = article_results.size %}
+
+{% assign printed_products_heading = false %}
+{% assign printed_articles_heading = false %}
+<section class="py-5">
+  <div class="container">
+    <div class="title_search text-center">
+      <h1>Search page</h1>
+
+      <form action="{{ routes.search_url }}" class="d-flex mt-3" role="search">
+        <input
+          class="form-control me-2"
+          name="q"
+          type="search"
+          placeholder="Type here ..."
+          aria-label="Search"
+          value="{{ search.terms | escape }}"
+        >
+        <button class="vivewear_btn_primary" type="submit">Search</button>
+      </form>
+    </div>
+    <div class="search_results">
+      {% if search.results_count >= 1 %}
+        <div class="row">
+          {%- comment -%} initialize our “heading printed” flags {%- endcomment -%}
+          {% assign printed_products_heading = false %}
+          {% assign printed_articles_heading = false %}
+
+          {% for item in search.results %}
+            {% case item.object_type %}
+              {% when 'product' %}
+                {%- unless printed_products_heading -%}
+                  <div class="col-12 mt-5 mb-3">
+                    <h2>
+                      {{ products_count }} Product
+                      {%- if products_count > 1 -%}
+                        s
+                      {%- endif %}
+                      found
+                    </h2>
+                  </div>
+                  {% assign printed_products_heading = true %}
+                {%- endunless -%}
+
+                <div class="col-sm-6 col-xl-3 {% if item.images.size > 1 %} multi_img_product {% endif %}">
+                  {% render 'product-card', product: item %}
+                </div>
+
+              {% when 'article' %}
+                {%- unless printed_articles_heading -%}
+                  <div class="col-12 mt-5 mb-3">
+                    <h2>
+                      {{ articles_count }} Article
+                      {%- if articles_count > 1 -%}
+                        s
+                      {%- endif %}
+                      found
+                    </h2>
+                  </div>
+                  {% assign printed_articles_heading = true %}
+                {%- endunless -%}
+
+                <div class="col-12 col-md-6 ">
+                  {% render 'article-card', article: item %}
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-center mt-5">No results found</p>
+      {% endif %}
+    </div>
+  </div>
+</section>

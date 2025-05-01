@@ -14,7 +14,9 @@
     <!-- product card start -->
     <div class="product_collection_wrapper row">
       {% for product in collection.products limit: section.settings.number_of_product %}
-        {% render 'product-card', product: product %}
+        <div class="col-sm-6 col-xl-{{ 12 |  divided_by:section.settings.number_of_product_column_laptop }} col-xxl-{{ 12 |  divided_by:section.settings.number_of_product_column_desktop }} {% if product.images.size > 1 %} multi_img_product {% endif %} ">
+          {% render 'product-card', product: product %}
+        </div>
       {% endfor %}
     </div>
     {% if collection.products_count > section.settings.number_of_product %}
