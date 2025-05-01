@@ -7,11 +7,14 @@
 {% comment %} group results by type and get counts {% endcomment %}
 {% assign product_results = search.results | where: 'object_type', 'product' %}
 {% assign article_results = search.results | where: 'object_type', 'article' %}
+{% assign pages_results = search.results | where: 'object_type', 'page' %}
 {% assign products_count = product_results.size %}
 {% assign articles_count = article_results.size %}
+{% assign pages_count = pages_results.size %}
 
 {% assign printed_products_heading = false %}
 {% assign printed_articles_heading = false %}
+{% assign printed_pages_heading = false %}
 <section class="py-5">
   <div class="container">
     <div class="title_search text-center">
@@ -32,10 +35,6 @@
     <div class="search_results">
       {% if search.results_count >= 1 %}
         <div class="row">
-          {%- comment -%} initialize our “heading printed” flags {%- endcomment -%}
-          {% assign printed_products_heading = false %}
-          {% assign printed_articles_heading = false %}
-
           {% for item in search.results %}
             {% case item.object_type %}
               {% when 'product' %}
@@ -72,6 +71,23 @@
 
                 <div class="col-12 col-md-6 ">
                   {% render 'article-card', article: item %}
+                </div>
+              {% when 'page' %}
+                {%- unless printed_pages_heading -%}
+                  <div class="col-12 mt-5 mb-3">
+                    <h2>
+                      {{ pages_count }} Page
+                      {%- if pages_count > 1 -%}
+                        s
+                      {%- endif %}
+                      found
+                    </h2>
+                  </div>
+                  {% assign printed_pages_heading = true %}
+                {%- endunless -%}
+
+                <div class="col-12 col-md-6 ">
+                  {% render 'page-card', page: item %}
                 </div>
             {% endcase %}
           {% endfor %}
