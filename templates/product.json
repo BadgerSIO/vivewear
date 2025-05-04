@@ -46,20 +46,9 @@
         "product_add_to_cart_8hJKUT"
       ],
       "settings": {}
-    },
-    "related_product": {
-      "type": "product-recommendation",
-      "settings": {
-        "product_per_page": 12,
-        "number_of_product_column_laptop": 3,
-        "number_of_product_column_desktop": 4,
-        "section_bg": "",
-        "section_padding": 50
-      }
     }
   },
   "order": [
-    "product_template",
-    "related_product"
+    "product_template"
   ]
 }
