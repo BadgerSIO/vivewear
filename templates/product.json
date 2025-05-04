@@ -9,6 +9,17 @@
  */
 {
   "sections": {
+    "product_recommendation_hfGULE": {
+      "type": "product-recommendation",
+      "name": "Product recommendations",
+      "settings": {
+        "product_per_page": 12,
+        "number_of_product_column_laptop": 3,
+        "number_of_product_column_desktop": 6,
+        "section_bg": "",
+        "section_padding": 50
+      }
+    },
     "product_template": {
       "type": "product-template",
       "blocks": {
@@ -49,6 +60,7 @@
     }
   },
   "order": [
-    "product_template"
+    "product_template",
+    "product_recommendation_hfGULE"
   ]
 }
