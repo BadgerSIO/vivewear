@@ -21,13 +21,14 @@
         ></button>
       {% endfor %}
     {% endif %}
-    
   </div>
   <div class="carousel-inner">
     {% for block in section.blocks %}
       <div
         class="carousel-item {% if forloop.index == 1 %}active{% endif %}"
-        {% if section.settings.slider_autoplay %} data-bs-interval="{{ block.settings.slider_autoplay_interval}}" {% endif %}
+        {% if section.settings.slider_autoplay %}
+          data-bs-interval="{{ block.settings.slider_autoplay_interval}}"
+        {% endif %}
       >
         {% if block.settings.slider_img != null %}
           <img
@@ -39,7 +40,7 @@
             height="auto"
           >
         {% endif %}
-        <div class="carousel-caption d-none d-md-block mb-5">
+        <div class="carousel-caption d-none d-md-block mb-5 py-5">
           <h5 class="fs-2">{{ block.settings.slide_title }}</h5>
           <div>
             {{ block.settings.slide_details }}
@@ -74,23 +75,23 @@
       "type": "checkbox",
       "id": "slider_autoplay",
       "label": "Enable autoplay",
-      "default":false,
+      "default": false
     },
     {
       "type": "checkbox",
       "id": "slider_navigation",
       "label": "Enable Slider navigation",
-      "default":true,
+      "default": true
     }
   ],
   "blocks": [
     {
       "type": "slider",
-      "name":"Slide",
+      "name": "Slide",
       "settings": [
         {
           "type": "image_picker",
-          "id":"slider_img",
+          "id": "slider_img",
           "label": "Select a image",
           "info": "Max 1200X1200"
         },
@@ -109,30 +110,32 @@
           "type": "text",
           "id": "slide_title",
           "label": "Add a title",
-          "default":"50% flat sale !"
+          "default": "50% flat sale !"
         },
         {
           "type": "richtext",
           "id": "slide_details",
           "label": "Add a details",
-          "default":"<p>Some representative placeholder content for the first slide.</p>"
+          "default": "<p>Some representative placeholder content for the first slide.</p>"
         },
         {
           "type": "text",
           "id": "slide_btn_label",
           "label": "Button label",
-          "default":"Shop now"
+          "default": "Shop now"
         },
         {
           "type": "url",
           "id": "slide_btn_url",
-          "label": "Button url",
+          "label": "Button url"
         }
       ]
     }
   ],
-  "presets": [{
-    "name": "Slide Show",
-  }]
+  "presets": [
+    {
+      "name": "Slide Show"
+    }
+  ]
 }
 {% endschema %}
