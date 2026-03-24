@@ -8,11 +8,5 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": {
-    "main-search-items": {
-      "type": "main-search-items",
-      "settings": {}
-    }
-  },
-  "order": ["main-search-items"]
+  "markets": {}
 }
