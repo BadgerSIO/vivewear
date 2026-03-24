@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "main-search-items": {
+      "type": "main-search-items"
+    }
+  },
+  "order": ["main-search-items"]
+}

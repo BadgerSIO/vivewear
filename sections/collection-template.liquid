@@ -1,0 +1,180 @@
+{% style %}
+  .section_wrapper_products{
+      padding: 80px 40px;
+      background: {{section.settings.section_bg}};
+      min-height: 70vh;
+  }
+    #collection_wrapper_{{section.id}}{
+       display: flex;
+       flex-direction: column;
+       gap: 20px;
+    }
+    .filter_wrapper_main{
+      width:100%;
+    }
+    @media (min-width: 1024px){
+      #collection_wrapper_{{section.id}}{
+       flex-direction: row;
+       gap: 60px;
+    }
+    .filter_wrapper_main{
+      max-width:350px;
+    }
+    }
+
+    .products_wrapper{
+      width:100%;
+    }
+    .filter_wrapper_secondary{
+        background: #ffffff;
+        padding: 30px 30px;
+        border: 1px solid #dddddd;
+        border-radius: 3px;
+    }
+    .filter_labels{
+        font-size: 16px;
+        display :block;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 10px;
+
+    }
+    .sort-by--container label {
+        white-space: nowrap;
+    }
+{% endstyle %}
+<section class="section_wrapper_products">
+  <div id="collection_wrapper_{{section.id}}">
+    {% comment %} filter code start {% endcomment %}
+    <div class="filter_wrapper_main">
+      <div class="filter_wrapper_secondary">
+        <h2>Filter</h2>
+
+        <div>
+          {% render 'collection-filters', collection: collection %}
+        </div>
+      </div>
+    </div>
+    {% comment %} filter code end {% endcomment %}
+    {% comment %} product cards code start {% endcomment %}
+    <div class="products_wrapper">
+      <div class="d-flex justify-content-between ">
+        <div class="section_title_container">
+          <h1 class="">{{ collection.title }}</h1>
+          <p>Total products found : {{ collection.products_count }}</p>
+        </div>
+        <div class="sort-by--container">
+          <div class="d-flex align-items-center gap-2">
+            <label>Sort By</label>
+            <select id="sort-by" class="sort-by form-control from-control-sm">
+              {% for option in collection.sort_options %}
+                <option
+                  value="{{ option.value }}"
+                  {% if option.value == collection.sort_by %}
+                    selected
+                  {% endif %}
+                >
+                  {{ option.name }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      {% paginate collection.products by 12 %}
+        <div class="row">
+          {% for product in collection.products %}
+            <div class="col-sm-6 col-xl-{{ 12 |  divided_by:section.settings.number_of_product_column_laptop }} col-xxl-{{ 12 |  divided_by:section.settings.number_of_product_column_desktop }} {% if product.images.size > 1 %} multi_img_product {% endif %} ">
+              {% render 'product-card', product: product %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="pagination justify-content-center mt-5">
+          {% render 'pagination', paginate: paginate %}
+        </div>
+      {% endpaginate %}
+    </div>
+    {% comment %} product cards code end {% endcomment %}
+  </div>
+</section>
+<script>
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (let keyValue, i = 0, queries = location.search.substr(1).split('&'); i < queries.length; i++) {
+      keyValue = queries[i].split('=');
+      if (keyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
+      }
+    }
+  }
+
+  document.querySelector('.sort-by').addEventListener('change', function (e) {
+    let value = e.currentTarget.value;
+    Shopify.queryParams.sort_by = value;
+    location.search = new URLSearchParams(Shopify.queryParams).toString();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "product settings"
+    },
+    {
+      "type": "range",
+      "id": "product_per_page",
+      "label": "Product per page",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+
+    {
+      "type": "range",
+      "id": "number_of_product_column_laptop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Product column laptop"
+    },
+    {
+      "type": "range",
+      "id": "number_of_product_column_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 6,
+      "label": "Product column desktop"
+    },
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section bg color"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "step": 1,
+      "max": 100,
+      "unit": "px",
+      "default": 50,
+      "label": "Section top bottom padding"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection"
+    }
+  ]
+}
+{% endschema %}

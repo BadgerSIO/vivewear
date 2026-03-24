@@ -1,0 +1,55 @@
+{% comment %}
+  Receives:
+    - article: the article object
+    - column  : optional Bootstrap column classes (e.g. "col-sm-6 col-lg-4")
+{% endcomment %}
+{% style %}
+  .article_date {
+    font-size: 12px;
+  }
+{% endstyle %}
+{% capture date %}
+  {{ article.published_at | date: "%B %d, %Y" }}
+{% endcapture %}
+
+<div class="">
+  {% if article.image %}
+    <div class="ratio ratio-16x9">
+      <a href="{{ article.url }}" class="d-block">
+        <img
+          src="{{ article.image | image_url: width: 800 }}"
+          class="card-img-top object-fit-cover"
+          alt="{{ article.title }}"
+          width="100%"
+          height="auto"
+        >
+      </a>
+    </div>
+  {% else %}
+    <div class="ratio ratio-16x9 bg-light d-flex align-items-center justify-content-center">
+      {{ 'image' | placeholder_svg_tag }}
+    </div>
+  {% endif %}
+  <div class="">
+    <p class="article_date">
+      {{ date -}}
+      {%- if article.author %} by {{ article.author }}{% endif %}
+    </p>
+    <h5 class="mb-1">
+      <a href="{{ article.url }}" class="">
+        {{ article.title }}
+      </a>
+    </h5>
+
+    <p class="content-summery">
+      {% if article.excerpt != blank %}
+        {{ article.excerpt }}
+      {% else %}
+        {{ article.content | strip_html | truncatewords: 10 }}
+      {% endif %}
+    </p>
+    <div class="">
+      <a href="{{ article.url }}" class="vivewear_btn_secondary w-100"> Read More </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "404-page",
+      "settings": {
+        "section_title": "Page not found",
+        "section_image": "shopify://shop_images/page-not-found.svg",
+        "btn_label": "Go back",
+        "btn_link": "/",
+        "section_padding_desktop": 100,
+        "section_padding_tablet": 60,
+        "section_padding_mobile": 50
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
